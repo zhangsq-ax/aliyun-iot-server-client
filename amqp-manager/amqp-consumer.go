@@ -3,6 +3,7 @@ package amqp_manager
 import (
 	"context"
 	"fmt"
+	"log"
 	"pack.ag/amqp"
 )
 
@@ -65,15 +66,19 @@ func (consumer *AMQPConsumer) Start(ctx context.Context, onMessage func(*amqp.Me
 
 	msgChan, errChan := consumer.run(ctx)
 
-	for {
-		select {
-		case msg := <-msgChan:
-			onMessage(msg)
-		case err = <-errChan:
-			return
+	go func() {
+		for {
+			select {
+			case msg := <-msgChan:
+				onMessage(msg)
+			case err = <-errChan:
+				log.Println(err)
+				return
+			}
 		}
-	}
+	}()
 
+	return
 }
 
 func (consumer *AMQPConsumer) run(ctx context.Context) (chan *amqp.Message, chan error) {
