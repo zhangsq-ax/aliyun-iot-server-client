@@ -48,8 +48,8 @@ func TestServiceInvoker_Invoke(t *testing.T) {
 		"order_id": "test-order",
 		"detail": []map[string]int{
 			{
-				"goods_id": 2468,
-				"amount":   2,
+				"product_id": 2468,
+				"amount":     2,
 			},
 		},
 	}))
