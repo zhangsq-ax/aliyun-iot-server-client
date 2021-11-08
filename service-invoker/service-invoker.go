@@ -35,7 +35,7 @@ func (invoker *ServiceInvoker) Invoke(device *options.DeviceInfo, payload *optio
 	}
 
 	if !res.Success {
-		err = fmt.Errorf("%s - %s", res.Code, res.ErrorMessage)
+		err = fmt.Errorf("failed to invoke service: %s", res.String())
 		return
 	}
 
