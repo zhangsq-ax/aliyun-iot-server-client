@@ -60,7 +60,9 @@ func TestAMQPConsumer_Start(t *testing.T) {
 	ctx, _ := context.WithTimeout(context.Background(), 120*time.Second)
 	ch := make(chan *amqp.Message)
 	err := consumer.Start(ctx, func(msg *amqp.Message) {
-		ch <- msg
+		t.Log(msg)
+		t.Log(string(msg.GetData()))
+		//ch <- msg
 	})
 	if err != nil {
 		t.Error(err)

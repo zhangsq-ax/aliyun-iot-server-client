@@ -39,12 +39,39 @@ func TestNewServiceInvoker(t *testing.T) {
 	}
 }
 
-func TestServiceInvoker_Invoke(t *testing.T) {
-	res, err := invoker.Invoke(&options.DeviceInfo{
+func TestServiceInvoker_InvokeService(t *testing.T) {
+	err := invoker.InvokeService(&options.DeviceInfo{
 		IotInstanceID: instanceId,
 		ProductKey:    productKey,
 		DeviceName:    deviceName,
-	}, options.NewServiceRequestPayload("thing.service.reserve", map[string]interface{}{
+	}, "open", map[string]int{
+		"duration": 10,
+	})
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestServiceInvoker_InvokeServiceSync(t *testing.T) {
+	res, err := invoker.InvokeServiceSync(&options.DeviceInfo{
+		IotInstanceID: instanceId,
+		ProductKey:    productKey,
+		DeviceName:    deviceName,
+	}, options.NewServiceSyncRequestPayloadByIdentifier("call", map[string]int{
+		"floor": 10,
+	}))
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(res)
+}
+
+/* func TestServiceInvoker_Invoke(t *testing.T) {
+	res, err := invoker.InvokeServiceSync(&options.DeviceInfo{
+		IotInstanceID: instanceId,
+		ProductKey:    productKey,
+		DeviceName:    deviceName,
+	}, options.NewServiceSyncRequestPayload("thing.service.reserve", map[string]interface{}{
 		"order_id": "test-order",
 		"detail": []map[string]int{
 			{
@@ -60,4 +87,4 @@ func TestServiceInvoker_Invoke(t *testing.T) {
 	}
 
 	t.Log(res)
-}
+} */
